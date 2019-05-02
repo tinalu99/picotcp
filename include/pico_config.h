@@ -228,6 +228,8 @@ static inline uint64_t long_long_be(uint64_t le)
 #elif defined __KERNEL__
 # include "arch/pico_linux.h"
 /* #elif defined ... */
+#elif defined CHICKADEE
+#include "arch/pico_chickadee.h"
 #else
 # include "arch/pico_posix.h"
 #endif
