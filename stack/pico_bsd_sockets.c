@@ -346,6 +346,7 @@ int pico_connect(int sd, const struct sockaddr *_saddr, socklen_t socklen)
         /* wait for event */
         ev = pico_bsd_wait(ep, 0, 0, 0); /* wait for ERR, FIN and CONN */
     }
+    chk_print("\nev is %d\n", ev);
 
     if(ev & PICO_SOCK_EV_CONN)
     {

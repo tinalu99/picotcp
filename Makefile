@@ -96,6 +96,10 @@ CFLAGS+= -Wall -W -Wextra -Wshadow -Wcast-qual -Wwrite-strings -Wundef -Wdeclara
 CFLAGS+= -Wconversion -Wcast-align -Wmissing-prototypes
 # options for supressing warnings
 CFLAGS+= -Wno-missing-field-initializers
+CFLAGS+= -m64 -mno-red-zone -mno-mmx -mno-sse -mno-sse2 -mno-sse3 -mno-3dnow -ffreestanding 
+CFLAGS+= -fno-omit-frame-pointer -fno-pic -Wall -W -Wshadow -Wno-format -Wno-unused-variable 
+CFLAGS+= -Wno-unused-label -Wno-unused-parameter -Wstack-usage=1024 -fno-stack-protector 
+CFLAGS+= -fno-exceptions -gdwarf -ffunction-sections -mcmodel=kernel
 
 ifeq ($(CC),clang)
 CFLAGS+= -Wunreachable-code-break -Wpointer-bool-conversion -Wmissing-variable-declarations
@@ -232,7 +236,7 @@ ifeq ($(ARCH),shared)
 endif
 
 %.o:%.c deps
-	$(CC) -c $(CFLAGS) -o $@ $< -nostdlib -lpthread
+	$(CC) -c $(CFLAGS) -o $@ $< -nostdlib 
 
 CORE_OBJ= stack/pico_stack.o \
           stack/pico_frame.o \
