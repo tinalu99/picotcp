@@ -766,7 +766,7 @@ void pico_stack_tick(void)
     /* dbg("LOOP_SCORES> %3d - %3d - %3d - %3d - %3d - %3d - %3d - %3d - %3d - %3d - %3d\n",score[0],score[1],score[2],score[3],score[4],score[5],score[6],score[7],score[8],score[9],score[10]); */
 
     /* score = pico_protocols_loop(100); */
-
+    chk_print("ret is %p\n", ret);
     ret[0] = pico_devices_loop(score[0], PICO_LOOP_DIR_IN);
     pico_rand_feed((uint32_t)ret[0]);
 
