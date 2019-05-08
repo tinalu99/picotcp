@@ -175,7 +175,7 @@ ifeq ($(ARCH),arm9)
 endif
 
 ifeq ($(ARCH),chickadee)
-  CFLAGS+=-DCHICKADEE
+  CFLAGS+=-DCHICKADEE -fno-stack-protector -nostdlib
 endif
 
 ifeq ($(ADDRESS_SANITIZER),1)
@@ -232,7 +232,7 @@ ifeq ($(ARCH),shared)
 endif
 
 %.o:%.c deps
-	$(CC) -c $(CFLAGS) -o $@ $<
+	$(CC) -c $(CFLAGS) -o $@ $< -nostdlib -lpthread
 
 CORE_OBJ= stack/pico_stack.o \
           stack/pico_frame.o \
@@ -241,14 +241,15 @@ CORE_OBJ= stack/pico_stack.o \
           stack/pico_socket.o \
           stack/pico_socket_multicast.o \
           stack/pico_tree.o \
-          stack/pico_md5.o
+          stack/pico_md5.o \
+          stack/pico_bsd_sockets.o \
+          stack/pico_osal_chickadee.o
 
 POSIX_OBJ+= modules/pico_dev_vde.o \
             modules/pico_dev_tun.o \
             modules/pico_dev_ipc.o \
             modules/pico_dev_tap.o \
             modules/pico_dev_mock.o
-
 include rules/debug.mk
 
 ifneq ($(ETH),0)
@@ -280,6 +281,15 @@ endif
 ifneq ($(DEVLOOP),0)
   include rules/devloop.mk
 endif
+ifneq ($(E1000),0)
+  MOD_OBJ+=$(LIBBASE)modules/pico_dev_e1000.o
+endif
+# ifneq ($(BSD),0)
+#   MOD_OBJ+=$(LIBBASE)modules/pico_posix_wrapper.o
+#   MOD_OBJ+=$(LIBBASE)modules/pico_bsd_sockets.o
+#   MOD_OBJ+=$(LIBBASE)modules/pico_osal_chickadee.o
+#   MOD_OBJ+=$(LIBBASE)modules/pico_osal_pthread.o
+# endif
 ifneq ($(DHCP_CLIENT),0)
   include rules/dhcp_client.mk
 endif

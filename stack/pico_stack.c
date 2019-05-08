@@ -33,6 +33,9 @@
 #include "pico_socket.h"
 #include "heap.h"
 
+// #include "/home/tinalu/Desktop/cs161-s19-psets-tinalu99/k-pico.hh"
+#include "../../../cs161-s19-psets-tinalu99/k-pico.hh"
+
 /* Mockables */
 #if defined UNIT_TEST
 #   define MOCKABLE __attribute__((weak))
@@ -598,6 +601,7 @@ static void pico_check_timers(void)
     while((tref) && (tref->expire < pico_tick)) {
         t = tref->tmr;
         if (t && t->timer)
+            chk_print("timer address %p\n", t->timer);
             t->timer(pico_tick, t->arg);
 
         if (t)

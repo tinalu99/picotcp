@@ -1629,6 +1629,7 @@ int pico_socket_connect(struct pico_socket *s, const void *remote_addr, uint16_t
     pico_err = PICO_ERR_EPROTONOSUPPORT;
     if (!s || remote_addr == NULL || remote_port == 0) {
         pico_err = PICO_ERR_EINVAL;
+        chk_print("connect 1\n");
         return -1;
     }
 
@@ -1638,6 +1639,7 @@ int pico_socket_connect(struct pico_socket *s, const void *remote_addr, uint16_t
         s->local_port = pico_socket_high_port(PROTO(s));
         if (!s->local_port) {
             pico_err = PICO_ERR_EINVAL;
+            chk_print("connect 2\n");
             return -1;
         }
     }
@@ -1653,6 +1655,7 @@ int pico_socket_connect(struct pico_socket *s, const void *remote_addr, uint16_t
             s->local_addr.ip4 = *local;
         } else {
             pico_err = PICO_ERR_EHOSTUNREACH;
+            chk_print("connect 3\n");
             return -1;
         }
 
@@ -1668,12 +1671,14 @@ int pico_socket_connect(struct pico_socket *s, const void *remote_addr, uint16_t
             s->local_addr.ip6 = *local;
         } else {
             pico_err = PICO_ERR_EHOSTUNREACH;
+            chk_print("connect 4\n");
             return -1;
         }
 
     #endif
     } else {
         pico_err = PICO_ERR_EINVAL;
+        chk_print("connect 5\n");
         return -1;
     }
 

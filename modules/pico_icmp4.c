@@ -251,6 +251,7 @@ static int8_t pico_icmp4_send_echo(struct pico_icmp4_ping_cookie *cookie)
     /* XXX: Fill payload */
     pico_icmp4_checksum(echo);
     pico_ipv4_frame_push(echo, &cookie->dst, PICO_PROTO_ICMP4);
+    chk_print("I think I am printing a ping with seq %d\n", cookie->seq);
     return 0;
 }
 
@@ -298,6 +299,7 @@ static int send_ping(struct pico_icmp4_ping_cookie *cookie)
 
 fail:
     dbg("ICMP4: Failed to start timer\n");
+    chk_print("ouch\n");
     cookie->err = PICO_PING_ERR_ABORTED;
     stats.err = cookie->err;
     cookie->cb(&stats);
@@ -308,6 +310,7 @@ fail:
 
 static void next_ping(pico_time now, void *arg)
 {
+    chk_print("next ping address %p\n", next_ping);
     struct pico_icmp4_ping_cookie *newcookie, *cookie = (struct pico_icmp4_ping_cookie *)arg;
     IGNORE_PARAMETER(now);
 
