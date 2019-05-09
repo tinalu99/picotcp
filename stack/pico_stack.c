@@ -600,10 +600,9 @@ static void pico_check_timers(void)
     pico_tick = PICO_TIME_MS();
     while((tref) && (tref->expire < pico_tick)) {
         t = tref->tmr;
-        if (t && t->timer)
-            chk_print("timer address %p\n", t->timer);
+        if (t && t->timer) {
             t->timer(pico_tick, t->arg);
-
+        }
         if (t)
         {
             PICO_FREE(t);
@@ -765,8 +764,6 @@ void pico_stack_tick(void)
 
     /* dbg("LOOP_SCORES> %3d - %3d - %3d - %3d - %3d - %3d - %3d - %3d - %3d - %3d - %3d\n",score[0],score[1],score[2],score[3],score[4],score[5],score[6],score[7],score[8],score[9],score[10]); */
 
-    /* score = pico_protocols_loop(100); */
-    chk_print("ret is %p\n", ret);
     ret[0] = pico_devices_loop(score[0], PICO_LOOP_DIR_IN);
     pico_rand_feed((uint32_t)ret[0]);
 
@@ -836,7 +833,7 @@ pico_timer_ref_add(pico_time expire, struct pico_timer *t, uint32_t id, uint32_t
         return 0;
     }
     if (Timers->n > PICO_MAX_TIMERS) {
-        dbg("Warning: I have %d timers\n", (int)Timers->n);
+        //dbg("Warning: I have %d timers\n", (int)Timers->n);
     }
 
     return tref.id;

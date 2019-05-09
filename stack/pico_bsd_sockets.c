@@ -129,11 +129,8 @@ static int                        PicoSocket_max    = 0;
 /* Socket interface. */
 int pico_newsocket(int domain, int type, int proto)
 {
-    chk_print("pico new socket\n");
     struct pico_bsd_endpoint * ep = NULL;
     (void)proto;
-
-    chk_print("arguments are %d, %d, %d\n", domain, type, proto);
 
 #ifdef PICO_SUPPORT_IPV6
     VALIDATE_TWO(domain,AF_INET, AF_INET6);
@@ -141,8 +138,6 @@ int pico_newsocket(int domain, int type, int proto)
     VALIDATE_ONE(domain, AF_INET);
 #endif
     VALIDATE_TWO(type,SOCK_STREAM,SOCK_DGRAM);
-
-    chk_print("after validating arguments\n");
 
     if (AF_INET6 != PICO_PROTO_IPV6) {
         if (domain == AF_INET6)
@@ -167,7 +162,6 @@ int pico_newsocket(int domain, int type, int proto)
     ep->s = pico_socket_open(domain, type,&pico_socket_event);
     if (!ep->s)
     {
-        chk_print("failed to open socket\n");
         PICO_FREE(ep);
         pico_mutex_unlock(picoLock);
         return -1;
@@ -181,7 +175,6 @@ int pico_newsocket(int domain, int type, int proto)
     ep->signal = pico_signal_init();
     ep->error = pico_err;
     pico_mutex_unlock(picoLock);
-    chk_print("returning in socket\n");
     return ep->socket_fd;
 }
 
@@ -326,7 +319,6 @@ int pico_connect(int sd, const struct sockaddr *_saddr, socklen_t socklen)
     {
         ep->error = PICO_ERR_EINVAL;
         errno = pico_err;
-        chk_print("here 1\n");
         return -1;
     }
     port = bsd_to_pico_port(_saddr, socklen);
@@ -335,7 +327,6 @@ int pico_connect(int sd, const struct sockaddr *_saddr, socklen_t socklen)
     pico_mutex_unlock(picoLock);
     if (ret < 0) {
         ep->error = pico_err;
-        chk_print("here 2\n");
         return -1;
     }
 
@@ -346,7 +337,6 @@ int pico_connect(int sd, const struct sockaddr *_saddr, socklen_t socklen)
         /* wait for event */
         ev = pico_bsd_wait(ep, 0, 0, 0); /* wait for ERR, FIN and CONN */
     }
-    chk_print("\nev is %d\n", ev);
 
     if(ev & PICO_SOCK_EV_CONN)
     {
@@ -360,7 +350,6 @@ int pico_connect(int sd, const struct sockaddr *_saddr, socklen_t socklen)
     }
     ep->error = pico_err;
     errno = pico_err;
-    chk_print("here 3\n");
     return -1;
 }
 
@@ -467,7 +456,6 @@ int pico_sendto(int sd, void * buf, int len, int flags, struct sockaddr *_dst, s
         pico_err = PICO_ERR_EINVAL;
         errno = pico_err;
         ep->error = pico_err;
-        chk_print("here 1\n");
         return -1;
     }
 
@@ -481,7 +469,6 @@ int pico_sendto(int sd, void * buf, int len, int flags, struct sockaddr *_dst, s
                 ep->error = PICO_ERR_EINVAL;
                 errno = pico_err;
                 pico_mutex_unlock(picoLock);
-                chk_print("here 2\n");
                 return -1;
             }
             port = bsd_to_pico_port(_dst, socklen);
@@ -496,7 +483,6 @@ int pico_sendto(int sd, void * buf, int len, int flags, struct sockaddr *_dst, s
             ep->error = pico_err;
             errno = pico_err;
             pico_event_clear(ep, PICO_SOCK_EV_WR);
-            chk_print("here 3\n");
             return -1;
         }
 
@@ -522,7 +508,6 @@ int pico_sendto(int sd, void * buf, int len, int flags, struct sockaddr *_dst, s
                 errno = pico_err;
                 pico_event_clear(ep, PICO_SOCK_EV_WR);
                 /* closing and freeing the socket is done in the event handler */
-                chk_print("here 4\n");
                 return -1;
             }
         }

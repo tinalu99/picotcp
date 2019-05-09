@@ -100,7 +100,7 @@ CFLAGS+= -m64 -mno-red-zone -mno-mmx -mno-sse -mno-sse2 -mno-sse3 -mno-3dnow -ff
 CFLAGS+= -fno-omit-frame-pointer -fno-pic -Wall -W -Wshadow -Wno-format -Wno-unused-variable 
 CFLAGS+= -Wno-unused-label -Wno-unused-parameter -Wstack-usage=1024 -fno-stack-protector 
 CFLAGS+= -fno-exceptions -gdwarf -ffunction-sections -mcmodel=kernel
-CFLAGS+= -fsanitize=undefined -fsanitize=kernel-address
+# CFLAGS+= -fsanitize=undefined -fsanitize=kernel-address
 
 ifeq ($(CC),clang)
 CFLAGS+= -Wunreachable-code-break -Wpointer-bool-conversion -Wmissing-variable-declarations

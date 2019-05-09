@@ -11,7 +11,6 @@ extern void ticks_idle(void);
 #define pico_free(x) chk_free(x)
 #define dbg chk_print
 
-
 static inline unsigned long PICO_TIME(void)
 {
     return ticks_time();

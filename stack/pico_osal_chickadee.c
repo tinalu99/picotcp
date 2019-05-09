@@ -24,7 +24,7 @@
 extern void* chk_mutex_init(void);
 extern void chk_mutex_deinit(void* mut);
 extern void chk_mutex_lock(void* mut);
-extern int chk_mutex_lock_timeout(void* mut, int timeout);
+extern int chk_mutex_lock_timeout(void* mut, int timeout); 
 extern void chk_mutex_unlock(void* mutex);
 
 void* pico_mutex_init(void)
